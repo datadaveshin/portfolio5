@@ -25,4 +25,21 @@ class PortfoliosController < ApplicationController
     end
   end
 
+  # Here since we are doing something to a particular entry, we use the find method to get the id from the parameter part of the url string
+  def edit
+    @portfolio_item = Portfolio.find(params[:id])
+  end
+
+  def update
+    @portfolio_item = Portfolio.find(params[:id])
+    
+    respond_to do |format|
+      if @portfolio_item.update(params.require(:portfolio).permit(:title, :subtitle, :body))
+        format.html {redirect_to portfolios_path, notice: "Portfolio item was successfully updated"}
+      else
+        format.html { render :edit }
+      end
+    end
+  end
+
 end
